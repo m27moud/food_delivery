@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:delivery_app/features/cart/data/models/cart_model.dart';
 import 'package:delivery_app/features/home/data/models/food_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RestaurantModel extends ChangeNotifier {
   final List<FoodModel> _menu = [
@@ -242,5 +243,46 @@ class RestaurantModel extends ChangeNotifier {
   void clearCart() {
     _cart.clear();
     notifyListeners();
+  }
+
+  String displayCartReceipt() {
+    final receipt = StringBuffer();
+
+    receipt.writeln('Here is your receipt:');
+    receipt.writeln();
+
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    receipt.writeln('Date: $formattedDate');
+
+    receipt.writeln();
+    receipt.writeln('------------');
+
+    for (final cartModel in _cart) {
+      receipt.writeln(
+        '${cartModel.quantity} x ${cartModel.foodModel.name} - ${_formatPrice(cartModel.foodModel.price)}',
+      );
+
+      if (cartModel.selectedAdons.isNotEmpty) {
+        receipt.writeln('  Add-ons: ${_formatAdons(cartModel.selectedAdons)}');
+      }
+
+      receipt.writeln();
+    }
+    receipt.writeln('------------');
+    receipt.writeln();
+    receipt.writeln('Total Items: ${getTotalItemCount()}');
+    receipt.writeln('Total Price: ${_formatPrice(getTotalPrice())}');
+
+    return receipt.toString();
+  }
+
+  String _formatPrice(double price) {
+    return '\$${price.toStringAsFixed(2)}';
+  }
+
+  String _formatAdons(List<Adon> adons) {
+    return adons
+        .map((adon) => "${adon.name} ( ${_formatPrice(adon.price)})")
+        .join(', ');
   }
 }
