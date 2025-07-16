@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/widgets/custom_sliver_app_bar.dart';
-import '../../../../details/presentation/views/details_view.dart';
+import '../../../details/presentation/views/details_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

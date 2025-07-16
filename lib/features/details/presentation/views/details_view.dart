@@ -1,6 +1,9 @@
 import 'package:delivery_app/core/widgets/custom_buttom.dart';
 import 'package:delivery_app/features/home/data/models/food_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../home/data/models/restaurant_model.dart';
 
 class DetailsView extends StatefulWidget {
   final FoodModel foodModel;
@@ -16,6 +19,18 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
+  void addToCart(FoodModel food, Map<Adon, bool> selectedAdons) {
+    Navigator.pop(context);
+    List<Adon> currentlySelectedAdon = [];
+
+    for (Adon adon in widget.foodModel.avilableAdons) {
+      if (widget.selectedAdons[adon] == true) {
+        currentlySelectedAdon.add(adon);
+      }
+    }
+    context.read<RestaurantModel>().addToCart(food, currentlySelectedAdon);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -132,7 +147,11 @@ class _DetailsViewState extends State<DetailsView> {
 
                 const SizedBox(height: 10),
 
-                CustomButtom(text: 'Add to cart', onTap: () {}),
+                CustomButtom(
+                  text: 'Add to cart',
+                  onTap: () =>
+                      addToCart(widget.foodModel, widget.selectedAdons),
+                ),
 
                 const SizedBox(height: 25),
               ],

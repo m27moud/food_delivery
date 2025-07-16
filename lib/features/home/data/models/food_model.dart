@@ -1,7 +1,7 @@
 class FoodModel {
   final String name;
   final String image;
-  final String price;
+  final double price;
   final String description;
   final FoodCategory category;
   List<Adon> avilableAdons;
@@ -20,6 +20,6 @@ enum FoodCategory { burgers, desserts, drinks, salads, sides }
 
 class Adon {
   final String name;
-  final String price;
+  final double price;
   const Adon({required this.name, required this.price});
 }
