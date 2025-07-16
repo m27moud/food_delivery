@@ -179,6 +179,10 @@ class RestaurantModel extends ChangeNotifier {
 
   final List<CartModel> _cart = [];
 
+  String _deliveryAdress = 'Damietta, Egypt';
+
+  String get deliveryAdress => _deliveryAdress;
+
   void addToCart(FoodModel food, List<Adon> selectedAdons) {
     CartModel? cartModel = _cart.firstWhereOrNull((item) {
       bool isSameFood = item.foodModel == food;
@@ -245,6 +249,11 @@ class RestaurantModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setDeliveryAdress(String address) {
+    _deliveryAdress = address;
+    notifyListeners();
+  }
+
   String displayCartReceipt() {
     final receipt = StringBuffer();
 
@@ -272,6 +281,8 @@ class RestaurantModel extends ChangeNotifier {
     receipt.writeln();
     receipt.writeln('Total Items: ${getTotalItemCount()}');
     receipt.writeln('Total Price: ${_formatPrice(getTotalPrice())}');
+    receipt.writeln();
+    receipt.writeln('Delivering to: $deliveryAdress');
 
     return receipt.toString();
   }

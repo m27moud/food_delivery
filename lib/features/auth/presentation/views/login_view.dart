@@ -1,8 +1,9 @@
+import 'package:delivery_app/core/services/auth_service.dart';
 import 'package:delivery_app/core/widgets/custom_buttom.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/custom_text_field.dart';
-import '../../../home/presentation/views/home_view.dart';
 
 class LoginView extends StatefulWidget {
   final void Function()? onTap;
@@ -17,11 +18,19 @@ class _LoginViewState extends State<LoginView> {
 
   final TextEditingController passwordController = TextEditingController();
 
-  void login() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeView()),
-    );
+  void login() async {
+    final authService = AuthService();
+
+    try {
+      await authService.signInWithEmailAndPassword(
+        emailController.text,
+        passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
   }
 
   @override
